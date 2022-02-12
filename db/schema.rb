@@ -10,10 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_12_205714) do
+ActiveRecord::Schema.define(version: 2022_02_12_221058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bicycles", force: :cascade do |t|
+    t.string "brand"
+    t.string "model"
+  end
 
   create_table "jwt_denylist", force: :cascade do |t|
     t.string "jti", null: false
