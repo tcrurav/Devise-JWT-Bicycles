@@ -1,6 +1,6 @@
 # Devise-JWT with a CRUD Example
 
-It's just that: a Ruby on Rails API with a CRUD. 
+A Ruby on Rails API with a CRUD using Devise-JWT to login/register. 
 
 ### Before starting
 
@@ -26,19 +26,50 @@ Go to the new created directory
 cd Devise-JWT-Bicycles
 ```
 
-Change the file config/database.yml
-
-```
-password: <your password>
-```
-
-Follow the steps of the following link to generate rails credentials:
-https://gist.github.com/db0sch/19c321cbc727917bc0e12849a7565af9
-
 Install all dependencies
 
 ```
 bundle install
+```
+
+Now generate a secret key. And note the output. We’ll add this into our credentials file momentarily.
+
+```
+rake secret
+```
+
+Generate rails credentials. The commands below will create the config/master.key and config/credentials.yml.enc files:
+
+```
+SET EDITOR="C:\Windows\System32\notepad.exe"
+rails credentials:edit
+```
+
+The notepad will open up. Now paste in the following, with the key generated from running rake secret above.
+
+```
+devise:
+  jwt_secret_key: <rake secret key>
+```
+
+Change the file config/database.yml
+
+```
+database: ruby_bicycles_development
+username: postgres  
+password: <your password>
+```
+
+Now make all migrations:
+
+```
+rails db:create db:migrate
+```
+
+Now the seeds:
+
+```
+rails db:seed
 ```
 
 Boot your API
@@ -47,8 +78,34 @@ Boot your API
 rails s
 ```
 
-Test your API with POSTMAN using the following requests:
+Now it's time to enjoy this project. Test your API with POSTMAN using the following requests:
 https://documenter.getpostman.com/view/3446841/UVeNkMk2
+
+
+The recommended order for the POSTMAN requests will be:
+
+```
+GET http://localhost:3000/bicycles
+```
+
+You'll get a message saying 'You are not logged in'.
+
+Now register a user and log in:
+
+```
+Post http://localhost:3000/users
+POST http://localhost:3000/users/sign_in
+```
+
+Copy the Bearer Token in the headers returned, and use it in the following request:
+
+```
+GET http://localhost:3000/bicycles
+```
+
+Now you'll get the info. Congrats!!!
+
+Try the other resquests as well...
 
 
 ## Built With
